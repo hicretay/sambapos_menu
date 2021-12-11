@@ -14,8 +14,20 @@ class MenuDetailPage extends StatefulWidget {
 
 class _MenuDetailPageState extends State<MenuDetailPage> {
   Map menuInfo;
-  int radioValue = 0;
-
+  Map<dynamic,int> radioValue={};
+  void  setRadioValue(){
+    for (var item in menuInfo["subMenus"]) {
+      Map<dynamic,int> temp = {item:0};
+      radioValue.addEntries(temp.entries);
+    }
+  }
+  @override
+  void initState() { 
+    super.initState();
+    setState(() {
+    setRadioValue();
+    });
+  }
   _MenuDetailPageState({required this.menuInfo});
   @override
   Widget build(BuildContext context) {
@@ -63,6 +75,7 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                                 subMenuDetail = item;
                               }
                             }
+
                           return Material(
                             child: Column(
                               children: [
@@ -72,16 +85,17 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                                   physics: NeverScrollableScrollPhysics(),
                                   itemCount: subMenuDetail["items"].length,
                                   itemBuilder: (context,index){
+                                    
                                   return RadioListTile(
-                                    onChanged: (value) {
-                                          radioValue = value as int;
+                                    onChanged: (value) {                                          
                                           setState(() {
+                                            radioValue[subMenuDetail["key"]] = value as int;
                                           });
                                         },
-                                    groupValue: radioValue,
+                                    groupValue: radioValue[subMenuDetail["key"]],
                                     value: index,
                                     title: Text(subMenuDetail["items"][index]["name"] ?? subMenuDetail["items"][index]["caption"]),
-                                    subtitle: Text(subMenuDetail["items"][index]["price"].toString()),
+                                    subtitle: Text(subMenuDetail["items"][index]["price"]?? ""),
                                     secondary: Image.asset(subMenuDetail["items"][index]["image"]),
                                     controlAffinity: ListTileControlAffinity.trailing,
                                     );
