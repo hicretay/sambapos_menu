@@ -1,5 +1,6 @@
-// ignore_for_file: no_logic_in_create_state, prefer_const_constructors
+// ignore_for_file: no_logic_in_create_state, prefer_const_constructors, unnecessary_null_comparison
 import 'package:flutter/material.dart';
+import 'package:sambapos_menu/settings/constants.dart';
 import 'package:sambapos_menu/settings/functions.dart';
 
 class MenuDetailPage extends StatefulWidget {
@@ -30,10 +31,12 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: 
+      AppBar(
         centerTitle: true,
-        title: Text(menuInfo["name"]),
-      ),
+        title: Text(menuInfo["name"] +" "+ menuInfo["price"] + "TL".toString(),style: TextStyle(color: Colors.white,fontSize: 20),),
+        backgroundColor: appBarColor,
+        elevation: defaultPadding),
       body: Column(
         children: [
           Material(
@@ -42,14 +45,6 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Image.asset(menuInfo["image"]),
-                Container(
-                  child: Column(
-                    children: [
-                      Text(menuInfo["caption"]),
-                      Text(menuInfo["price"].toString()),
-                    ],
-                  ),
-                )
               ],
             ),
           ),
@@ -77,7 +72,10 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                           return Material(
                             child: Column(
                               children: [
-                                Text(subMenuDetail["description"]),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: defaultPadding),
+                                  child: Text(subMenuDetail["description"],style: TextStyle(fontSize: 20),),
+                                ),
                                 ListView.builder(
                                   shrinkWrap: true,
                                   physics: NeverScrollableScrollPhysics(),
@@ -93,7 +91,8 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                                     groupValue: radioValue[subMenuDetail["key"]],
                                     value: index,
                                     title: Text(subMenuDetail["items"][index]["name"] ?? subMenuDetail["items"][index]["caption"]),
-                                    subtitle: Text(subMenuDetail["items"][index]["price"]?? ""),
+                                    // ignore: prefer_if_null_operators
+                                    subtitle:  subMenuDetail["items"][index]["price"] == null ? Container() : Text(subMenuDetail["items"][index]["price"].toString()),
                                     secondary: Image.asset(subMenuDetail["items"][index]["image"]),
                                     controlAffinity: ListTileControlAffinity.trailing,
                                     );
