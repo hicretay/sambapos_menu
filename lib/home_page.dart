@@ -2,9 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:sambapos_menu/functions.dart';
 import 'package:sambapos_menu/home_detail_page.dart';
-import 'package:yaml/yaml.dart';
-import "package:flutter/services.dart" as s;
-
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -17,8 +14,7 @@ class _HomePageState extends State<HomePage> {
 
   Map mapData = {};
   Future<bool> get getData async {
-     final data = await s.rootBundle.loadString("assets/menu.yaml");
-     mapData = loadYaml(data);
+    mapData = await getAllMenu();
     return true;
   }
 
@@ -41,7 +37,6 @@ class _HomePageState extends State<HomePage> {
                       shrinkWrap: true,
                       itemCount: mapData["menus"][0]['items'].length,
                       itemBuilder: (BuildContext context, int index){
-                        print(getAllMenu(context));
                       return SizedBox(
                         child: ElevatedButton(onPressed: ()  {
                           print(mapData);

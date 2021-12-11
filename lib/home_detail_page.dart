@@ -20,7 +20,7 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
       body: ListView.builder(
         itemCount: menuDetail.length,
         itemBuilder: (BuildContext context, int index){
-          return Text(menuDetail[index]["name"]);
+          return ElevatedButton(onPressed: (){}, child: Text(menuDetail[index]["name"]));
         }),
     );
   }
