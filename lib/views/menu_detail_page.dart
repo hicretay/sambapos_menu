@@ -1,8 +1,6 @@
 // ignore_for_file: no_logic_in_create_state, prefer_const_constructors
-
 import 'package:flutter/material.dart';
-import 'package:sambapos_menu/extensions.dart';
-import 'package:sambapos_menu/functions.dart';
+import 'package:sambapos_menu/settings/functions.dart';
 
 class MenuDetailPage extends StatefulWidget {
   final Map menuInfo;
@@ -105,13 +103,9 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                           );
                         });
                       }else{
-                        return Center(child: CircularProgressIndicator(),);
-                      }
-                    }              
-                    
-
-                ///////////////////
-                
+                        return Center(child: CircularProgressIndicator());
+                    }
+                }                             
               }
             ),
           )
