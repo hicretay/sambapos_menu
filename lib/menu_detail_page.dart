@@ -14,6 +14,7 @@ class MenuDetailPage extends StatefulWidget {
 
 class _MenuDetailPageState extends State<MenuDetailPage> {
   Map menuInfo;
+  int radioValue = 0;
 
   _MenuDetailPageState({required this.menuInfo});
   @override
@@ -55,24 +56,35 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                         Map mapData = snapshot.requireData;
                         return ListView.builder(
                           itemCount: menuInfo["subMenus"].length,
-                          itemBuilder: (context,index){
+                          itemBuilder: (context,groupIndex){
                             Map subMenuDetail = {};
                             for (var item in mapData["menus"]) {
-                              if (item["key"] == menuInfo["subMenus"][index]) {
+                              if (item["key"] == menuInfo["subMenus"][groupIndex]) {
                                 subMenuDetail = item;
                               }
                             }
                           return Material(
                             child: Column(
                               children: [
-                                Text(menuInfo["subMenus"][index]),
+                                Text(subMenuDetail["description"]),
                                 ListView.builder(
                                   shrinkWrap: true,
                                   physics: NeverScrollableScrollPhysics(),
                                   itemCount: subMenuDetail["items"].length,
                                   itemBuilder: (context,index){
-                                  return Text(subMenuDetail["items"][index]["name"] ?? subMenuDetail["items"][index]["caption"]);
-
+                                  return RadioListTile(
+                                    onChanged: (value) {
+                                          radioValue = value as int;
+                                          setState(() {
+                                          });
+                                        },
+                                    groupValue: radioValue,
+                                    value: index,
+                                    title: Text(subMenuDetail["items"][index]["name"] ?? subMenuDetail["items"][index]["caption"]),
+                                    subtitle: Text(subMenuDetail["items"][index]["price"].toString()),
+                                    secondary: Image.asset(subMenuDetail["items"][index]["image"]),
+                                    controlAffinity: ListTileControlAffinity.trailing,
+                                    );
                                 })
                               ],
                             ),
