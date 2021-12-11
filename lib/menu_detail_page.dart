@@ -1,4 +1,4 @@
-// ignore_for_file: no_logic_in_create_state
+// ignore_for_file: no_logic_in_create_state, prefer_const_constructors
 
 import 'package:flutter/material.dart';
 import 'package:sambapos_menu/extensions.dart';
@@ -35,7 +35,7 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                   child: Column(
                     children: [
                       Text(menuInfo["caption"]),
-                      Text(menuInfo["price"]),
+                      Text(menuInfo["price"].toString()),
                     ],
                   ),
                 )
@@ -44,13 +44,50 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
           ),
           menuInfo["subMenus"] == null ? Container() :  
           Expanded(
-            child: ListView.builder(
-              itemCount: menuInfo["subMenus"].length,
-              itemBuilder: (context,index){
-              return Container(
-                child: Text(menuInfo["subMenus"][index]),
-              );
-            }),
+            child: FutureBuilder<Map>(
+              future: getAllMenu(),
+              builder: (context, snapshot) {              
+                    if(snapshot.hasError){
+                      return Center(child: Text("Hata"));
+                    }else
+                    {
+                      if (snapshot.hasData) {
+                        Map mapData = snapshot.requireData;
+                        return ListView.builder(
+                          itemCount: menuInfo["subMenus"].length,
+                          itemBuilder: (context,index){
+                            Map subMenuDetail = {};
+                            for (var item in mapData["menus"]) {
+                              if (item["key"] == menuInfo["subMenus"][index]) {
+                                subMenuDetail = item;
+                              }
+                            }
+                          return Material(
+                            child: Column(
+                              children: [
+                                Text(menuInfo["subMenus"][index]),
+                                ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: subMenuDetail["items"].length,
+                                  itemBuilder: (context,index){
+                                  return Text(subMenuDetail["items"][index]["name"] ?? subMenuDetail["items"][index]["caption"]);
+
+                                })
+                              ],
+                            ),
+                          );
+                        });
+                      }else{
+                        return Center(child: CircularProgressIndicator(),);
+                      }
+                    }              
+                    
+
+                ///////////////////
+                
+              }
+            ),
           )
         ],
       )

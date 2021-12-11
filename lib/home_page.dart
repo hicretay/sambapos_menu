@@ -13,12 +13,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  Map mapData = {};
-  Future<bool> get getData async {
-    mapData = await getAllMenu();
-    return true;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,14 +20,15 @@ class _HomePageState extends State<HomePage> {
         child: 
              Column(
               children: [
-                FutureBuilder<bool>(
-                  future: getData,
+                FutureBuilder<Map>(
+                  future: getAllMenu(),
                   builder: (context, snapshot) {      
                     if(snapshot.hasError){
                       return Center(child: Text("Hata"));
                     }else
                     {
                       if (snapshot.hasData) {
+                        Map mapData = snapshot.requireData;
                         return Expanded(
                           child: ListView.builder(
                           shrinkWrap: true,
