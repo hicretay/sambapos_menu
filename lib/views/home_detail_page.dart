@@ -34,8 +34,9 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
             child: 
             
             InkWell(
-              onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>MenuDetailPage(menuInfo: menuDetail[index])));
+              onTap:  menuDetail[index]["subMenus"] == null ? (){} :
+              (){
+                 Navigator.push(context, MaterialPageRoute(builder: (context)=>MenuDetailPage(menuInfo: menuDetail[index])));
               }, 
               child: MenuCardWidget(
                 image: Image.asset(menuDetail[index]["image"]),
