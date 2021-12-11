@@ -40,7 +40,7 @@ class _HomeDetailPageState extends State<HomeDetailPage> {
               }, 
               child: MenuCardWidget(
                 image: Image.asset(menuDetail[index]["image"]),
-                leading: Text(menuDetail[index]["name"]),
+                leading: Text(menuDetail[index]["name"] +" "+ menuDetail[index]["price"].toString()),
             )),
           );
         }),
